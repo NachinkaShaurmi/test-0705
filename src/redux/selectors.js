@@ -1,0 +1,1 @@
+export const getRequestFromState = (state) => state.requests;
