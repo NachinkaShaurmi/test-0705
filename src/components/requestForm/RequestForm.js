@@ -2,11 +2,14 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Input, Radio } from "antd";
 import { getRequestFromState } from "../../redux/selectors";
-import textTransform from "../../assets/textTransform"
-import requestData from "../../redux/requests/requestsActions"
-import "./request.css"
+import { addToHistoryRequest } from "../../redux/history/historyActions";
+import { setCurrent } from "../../redux/currentRequest/currentRequestActions";
+import textTransform from "../../assets/textTransform";
+import requestData from "../../redux/asyncActions/requestHttpData";
+import { v4 as uuidv4 } from 'uuid';
+import "./request.css";
 
-const Request = () => {
+const RequestForm = () => {
   const dispatch = useDispatch();
   const options = [
     { label: "GET", value: "GET" },
@@ -16,23 +19,30 @@ const Request = () => {
   ];
   const { Search, TextArea } = Input;
   const { loading } = useSelector(getRequestFromState);
-  const [url, setUrl] = useState("");
+  const [url, setUrl] = useState(
+    "https://jsonplaceholder.typicode.com/posts/1"
+  );
   const [method, setMethod] = useState(options[0].value);
   const [headersText, setHeadersText] = useState("");
   const [bodyText, setBodyText] = useState("");
   const headers = textTransform(headersText);
   const body = textTransform(bodyText);
-  
 
   const myReq = {
-    method: method,
-    url: url,
-    headers: headers,
-    body: body,
+    id: uuidv4(),
+    date: new Date(Date.now()).toLocaleTimeString("ru-RU"),
+    request: {
+      method: method,
+      url: url,
+      headers: headers,
+      body: body,
+    }
   };
 
   const onSearch = () => {
     dispatch(requestData(myReq));
+    dispatch(addToHistoryRequest(myReq));
+    dispatch(setCurrent(myReq.id));
   };
 
   return (
@@ -50,7 +60,8 @@ const Request = () => {
         placeholder="HTTP URL"
         enterButton="Send"
         size="large"
-        loading={loading}
+        // loading={loading}
+        value={url}
         onChange={(e) => setUrl(e.target.value)}
         onSearch={onSearch}
       />
@@ -78,4 +89,4 @@ const Request = () => {
   );
 };
 
-export default Request;
+export default RequestForm;

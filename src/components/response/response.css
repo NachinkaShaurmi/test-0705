@@ -1,0 +1,8 @@
+.response {
+  margin-top: 20px;
+  padding: 10px;
+  border: solid #ccc 1px;
+  border-radius: 2px;
+  max-width: 500px;
+  width: 100%;
+}
