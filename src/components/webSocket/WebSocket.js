@@ -17,7 +17,7 @@ const testInitState = [
 ];
 
 const MyWebSocket = () => {
-  const [wsUrl, setWsUrl] = useState("ws://localhost:5000");
+  const [wsUrl, setWsUrl] = useState("ws://localhost:5500");
   const [messages, setMessages] = useState(testInitState);
   const [connected, setConnected] = useState(false);
   const [name, setName] = useState("Test");
