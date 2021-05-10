@@ -1,0 +1,32 @@
+.ws-form  {
+  max-width: 516px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.ws-form__element {
+  margin-top: 20px;
+}
+
+.ws-form__messages {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  padding: 12px;
+  border-radius: 2px;
+}
+
+.ws-form__message {
+  width: 400px;
+}
+
+.ws-form__message_connection {
+  text-align: center;
+}
+
+.ws-form__message_data {
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  padding: 8px;
+  margin-top: 10px;
+}

@@ -6,6 +6,8 @@ import RequestForm from "./components/requestForm/RequestForm";
 import Response from "./components/response/Response";
 import History from "./components/history/History";
 import RequestView from "./components/requestView/RequestView";
+import MyWebSocket from "./components/webSocket/WebSocket";
+
 
 function App() {
   return (
@@ -14,6 +16,7 @@ function App() {
         <RequestForm />
         <RequestView />
         <Response />
+        <MyWebSocket />
         <History />
       </div>
     </Provider>

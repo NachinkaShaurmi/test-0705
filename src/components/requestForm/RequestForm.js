@@ -1,16 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Input, Radio } from "antd";
-import { getRequestFromState } from "../../redux/selectors";
+import {
+  getHistoryFromState,
+  getCurrentFromState,
+  getRequestFromState,
+} from "../../redux/selectors";
 import { addToHistoryRequest } from "../../redux/history/historyActions";
 import { setCurrent } from "../../redux/currentRequest/currentRequestActions";
-import textTransform from "../../assets/textTransform";
-import requestData from "../../redux/asyncActions/requestHttpData";
-import { v4 as uuidv4 } from 'uuid';
-import "./request.css";
+import textTransformToObject from "../../assets/textTransformToObject";
+import textTransformFromObject from "../../assets/textTransformFromObject";
+import requestHttpData from "../../redux/asyncActions/requestHttpData";
+import { v4 as uuidv4 } from "uuid";
+import "./requestForm.css";
 
 const RequestForm = () => {
   const dispatch = useDispatch();
+  const currentId = useSelector(getCurrentFromState);
+  const history = useSelector(getHistoryFromState);
   const options = [
     { label: "GET", value: "GET" },
     { label: "POST", value: "POST" },
@@ -25,8 +32,8 @@ const RequestForm = () => {
   const [method, setMethod] = useState(options[0].value);
   const [headersText, setHeadersText] = useState("");
   const [bodyText, setBodyText] = useState("");
-  const headers = textTransform(headersText);
-  const body = textTransform(bodyText);
+  const headers = textTransformToObject(headersText);
+  const body = textTransformToObject(bodyText);
 
   const myReq = {
     id: uuidv4(),
@@ -36,11 +43,27 @@ const RequestForm = () => {
       url: url,
       headers: headers,
       body: body,
-    }
+    },
   };
 
+  useEffect(() => {
+    if (currentId) {
+      let currentRequest;
+      for (let i = 0; i < history.length; i++) {
+        if (history[i].id === currentId) {
+          currentRequest = history[i];
+          break;
+        }
+      }
+      setMethod(currentRequest?.request?.method);
+      setUrl(currentRequest?.request?.url);
+      setHeadersText(textTransformFromObject(currentRequest?.request?.headers));
+      setBodyText(textTransformFromObject(currentRequest?.request?.body));
+    }
+  }, [currentId]);
+
   const onSearch = () => {
-    dispatch(requestData(myReq));
+    dispatch(requestHttpData(myReq));
     dispatch(addToHistoryRequest(myReq));
     dispatch(setCurrent(myReq.id));
   };
@@ -48,7 +71,7 @@ const RequestForm = () => {
   return (
     <div className="request">
       <Radio.Group
-        className="request__element"
+        className="request-form__element"
         options={options}
         onChange={(e) => setMethod(e.target.value)}
         value={method}
@@ -56,16 +79,16 @@ const RequestForm = () => {
         buttonStyle="solid"
       />
       <Search
-        className="request__element"
+        className="request-form__element"
         placeholder="HTTP URL"
         enterButton="Send"
         size="large"
-        // loading={loading}
+        disabled={loading}
         value={url}
         onChange={(e) => setUrl(e.target.value)}
         onSearch={onSearch}
       />
-      <div className="request__element">
+      <div className="request-form__element">
         <h3>Headers</h3>
         <TextArea
           rows={4}
@@ -75,7 +98,7 @@ const RequestForm = () => {
         />
       </div>
       {method !== "GET" && (
-        <div className="request__element">
+        <div className="request-form__element">
           <h3>Body</h3>
           <TextArea
             rows={4}

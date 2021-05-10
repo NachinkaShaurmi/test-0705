@@ -1,6 +1,5 @@
 import { ADD_TO_HISTORY_REQUEST,  ADD_TO_HISTORY_RESPONSE} from "./historyTypes";
 
-
 const historyReducer = (state = [], action) => {
   switch (action.type) {
     case ADD_TO_HISTORY_REQUEST:

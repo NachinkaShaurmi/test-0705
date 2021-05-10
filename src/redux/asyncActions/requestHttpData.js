@@ -7,7 +7,7 @@ import {
 import { addToHistoryResponse } from "../history/historyActions"
 
 
-const requestData = ({ request, id }) => (dispatch) => {
+const requestHttpData = ({ request, id }) => (dispatch) => {
   dispatch(fetchRequest());
   const {method, url, headers, body} = request;
   axios({
@@ -23,8 +23,7 @@ const requestData = ({ request, id }) => (dispatch) => {
     .catch((err) => {
       dispatch(fetchFailure(err.message));
       dispatch(addToHistoryResponse({id, response: err}));
-
     });
 };
 
-export default requestData;
+export default requestHttpData;

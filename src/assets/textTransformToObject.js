@@ -1,4 +1,4 @@
-const textTransform = (text) => {
+const textTransformToObject = (text) => {
   let result = {};
   try {
     const arr = text
@@ -12,4 +12,4 @@ const textTransform = (text) => {
   return result;
 };
 
-export default textTransform;
+export default textTransformToObject;

@@ -17,23 +17,23 @@ const RequestView = () => {
       break;
     }
   }
-  const { request } = currentRequest;
+  const request = currentRequest?.request;
   const requestBodyView = responseTransform(request?.body);
   const requestHeadersView = responseTransform(request?.headers);
-  console.log(requestBodyView);
+
   return (
-    <div className="request">
-      <h2 className="request__title">Request:</h2>
-      <div className="request__data">
+    <div className="request-view">
+      <h2 className="request-view__title">Request:</h2>
+      <div className="request-view__data">
         <p>method: {request?.method}</p>
         <p>url: {request?.url}</p>
-        {requestBodyView.length ? (
+        {requestBodyView?.length ? (
           <>
             <h4>Body</h4>
             <div>{requestBodyView}</div>
           </>
         ) : null}
-        {requestHeadersView.length ? (
+        {requestHeadersView?.length ? (
           <>
             <h4>Headers</h4>
             {requestHeadersView}
